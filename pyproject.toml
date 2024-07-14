@@ -1,0 +1,17 @@
+[tool.poetry]
+name = "crypto-watcher"
+version = "0.1.0"
+description = ""
+authors = ["bodharma <bohdan@lesiv.dev>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.9"
+boto3 = "^1.34.144"
+requests = "^2.32.3"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+

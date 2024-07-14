@@ -1,0 +1,191 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: 'AWS::Serverless-2016-10-31'
+Description: Serverless application for crypto investments
+
+Resources:
+  # DynamoDB Tables
+  CryptoConfigTable:
+    Type: 'AWS::DynamoDB::Table'
+    Properties:
+      TableName: 'CryptoConfig'
+      AttributeDefinitions:
+        - AttributeName: 'ConfigType'
+          AttributeType: 'S'
+      KeySchema:
+        - AttributeName: 'ConfigType'
+          KeyType: 'HASH'
+      BillingMode: PAY_PER_REQUEST
+
+  CryptoPricesTable:
+    Type: 'AWS::DynamoDB::Table'
+    Properties:
+      TableName: 'CryptoPrices'
+      AttributeDefinitions:
+        - AttributeName: 'Date'
+          AttributeType: 'S'
+        - AttributeName: 'Coin'
+          AttributeType: 'S'
+      KeySchema:
+        - AttributeName: 'Date'
+          KeyType: 'HASH'
+        - AttributeName: 'Coin'
+          KeyType: 'RANGE'
+      BillingMode: PAY_PER_REQUEST
+
+  CryptoPredictionsTable:
+    Type: 'AWS::DynamoDB::Table'
+    Properties:
+      TableName: 'CryptoPredictions'
+      AttributeDefinitions:
+        - AttributeName: 'Month'
+          AttributeType: 'S'
+      KeySchema:
+        - AttributeName: 'Month'
+          KeyType: 'HASH'
+      BillingMode: PAY_PER_REQUEST
+
+  # S3 Bucket
+  VisualizationBucket:
+    Type: 'AWS::S3::Bucket'
+    Properties:
+      BucketName: 'crypto-visualizations'
+
+  # Lambda Functions
+  FetchPricesFunction:
+    Type: 'AWS::Serverless::Function'
+    Properties:
+      Handler: 'fetch_prices.lambda_handler'
+      Runtime: 'python3.12'
+      CodeUri: fetch_prices/
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: !Ref CryptoPricesTable
+      Environment:
+        Variables:
+          PRICES_TABLE_NAME: !Ref CryptoPricesTable
+
+  CalculatePredictionsFunction:
+    Type: 'AWS::Serverless::Function'
+    Properties:
+      Handler: 'calculate_predictions.lambda_handler'
+      Runtime: 'python3.12'
+      CodeUri: calculate_predictions/
+      Timeout: 30  # Increase the timeout to 30 seconds
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: !Ref CryptoPredictionsTable
+        - DynamoDBReadPolicy:
+            TableName: !Ref CryptoConfigTable
+        - Statement:
+            Effect: Allow
+            Action:
+              - dynamodb:Scan
+              - dynamodb:Query
+            Resource:
+              - !GetAtt CryptoPricesTable.Arn
+      Environment:
+        Variables:
+          PREDICTIONS_TABLE_NAME: !Ref CryptoPredictionsTable
+          CONFIG_TABLE_NAME: !Ref CryptoConfigTable
+          PRICES_TABLE_NAME: !Ref CryptoPricesTable
+
+  VisualizeDataFunction:
+    Type: 'AWS::Serverless::Function'
+    Properties:
+      Handler: 'visualize_data.lambda_handler'
+      Runtime: 'python3.12'
+      CodeUri: visualize_data/
+      Timeout: 30  # Increase the timeout to 30 seconds
+      Policies:
+        - S3CrudPolicy:
+            BucketName: !Ref VisualizationBucket
+        - DynamoDBReadPolicy:
+            TableName: !Ref CryptoPricesTable
+        - DynamoDBReadPolicy:
+            TableName: !Ref CryptoPredictionsTable
+      Environment:
+        Variables:
+          PRICES_TABLE_NAME: !Ref CryptoPricesTable
+          PREDICTIONS_TABLE_NAME: !Ref CryptoPredictionsTable
+          S3_BUCKET_NAME: !Ref VisualizationBucket
+
+  # CloudWatch Event Rules and Triggers
+  FetchPricesRule:
+    Type: 'AWS::Events::Rule'
+    Properties:
+      ScheduleExpression: 'rate(1 day)'
+      Targets:
+        - Arn: !GetAtt FetchPricesFunction.Arn
+          Id: 'FetchPricesFunction'
+    DependsOn: FetchPricesFunction
+
+  FetchPricesPermission:
+    Type: 'AWS::Lambda::Permission'
+    Properties:
+      Action: 'lambda:InvokeFunction'
+      FunctionName: !Ref FetchPricesFunction
+      Principal: 'events.amazonaws.com'
+      SourceArn: !GetAtt FetchPricesRule.Arn
+
+  CalculatePredictionsRule:
+    Type: 'AWS::Events::Rule'
+    Properties:
+      ScheduleExpression: 'cron(0 0 1 * ? *)'
+      Targets:
+        - Arn: !GetAtt CalculatePredictionsFunction.Arn
+          Id: 'CalculatePredictionsFunction'
+    DependsOn: CalculatePredictionsFunction
+
+  CalculatePredictionsPermission:
+    Type: 'AWS::Lambda::Permission'
+    Properties:
+      Action: 'lambda:InvokeFunction'
+      FunctionName: !Ref CalculatePredictionsFunction
+      Principal: 'events.amazonaws.com'
+      SourceArn: !GetAtt CalculatePredictionsRule.Arn
+
+  VisualizeDataRule:
+    Type: 'AWS::Events::Rule'
+    Properties:
+      ScheduleExpression: 'rate(1 day)'
+      Targets:
+        - Arn: !GetAtt VisualizeDataFunction.Arn
+          Id: 'VisualizeDataFunction'
+    DependsOn: VisualizeDataFunction
+
+  VisualizeDataPermission:
+    Type: 'AWS::Lambda::Permission'
+    Properties:
+      Action: 'lambda:InvokeFunction'
+      FunctionName: !Ref VisualizeDataFunction
+      Principal: 'events.amazonaws.com'
+      SourceArn: !GetAtt VisualizeDataRule.Arn
+
+Outputs:
+  ConfigTable:
+    Description: 'DynamoDB Table for Configuration'
+    Value: !Ref CryptoConfigTable
+
+  PricesTable:
+    Description: 'DynamoDB Table for Prices'
+    Value: !Ref CryptoPricesTable
+
+  PredictionsTable:
+    Description: 'DynamoDB Table for Predictions'
+    Value: !Ref CryptoPredictionsTable
+
+  S3Bucket:
+    Description: 'S3 Bucket for Visualizations'
+    Value: !Ref VisualizationBucket
+
+  FetchPricesFunctionName:
+    Description: "Fetch Prices Lambda Function Name"
+    Value: !Ref FetchPricesFunction
+
+  CalculatePredictionsFunctionName:
+    Description: "Calculate Predictions Lambda Function Name"
+    Value: !Ref CalculatePredictionsFunction
+
+  VisualizeDataFunctionName:
+    Description: "Visualize Data Lambda Function Name"
+    Value: !Ref VisualizeDataFunction
