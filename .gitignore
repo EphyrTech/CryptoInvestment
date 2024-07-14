@@ -1,5 +1,5 @@
-deploy.sh
-test_stack.sh
+lambdas/deploy.sh
+lambdas/test_stack.sh
 # Created by https://www.gitignore.io/api/osx,linux,python,windows,pycharm,visualstudiocode
 
 ### Linux ###
