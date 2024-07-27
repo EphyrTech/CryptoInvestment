@@ -1,0 +1,63 @@
+{
+  "AWSTemplateFormatVersion": "2010-09-09",
+  "Resources": {
+    "S3Bucket": {
+      "Type": "AWS::S3::Bucket",
+      "Properties": {
+        "BucketName": "crypto-visualizations"
+      }
+    },
+    "S3AuthPolicy": {
+      "Type": "AWS::IAM::Policy",
+      "Properties": {
+        "PolicyName": "s3-amplify-auth-policy",
+        "PolicyDocument": {
+          "Version": "2012-10-17",
+          "Statement": [
+            {
+              "Effect": "Allow",
+              "Action": [
+                "s3:GetObject",
+                "s3:PutObject"
+              ],
+              "Resource": [
+                "arn:aws:s3:::crypto-visualizations/*"
+              ]
+            }
+          ]
+        },
+        "Roles": [
+          {
+            "Ref": "authRole"
+          }
+        ]
+      }
+    },
+    "S3UnauthPolicy": {
+      "Type": "AWS::IAM::Policy",
+      "Properties": {
+        "PolicyName": "s3-amplify-unauth-policy",
+        "PolicyDocument": {
+          "Version": "2012-10-17",
+          "Statement": [
+            {
+              "Effect": "Allow",
+              "Action": [
+                "s3:GetObject"
+              ],
+              "Resource": [
+                "arn:aws:s3:::crypto-visualizations/*"
+              ]
+            }
+          ]
+        },
+        "Roles": [
+          {
+            "Ref": "unauthRole"
+          }
+        ]
+      }
+    }
+  },
+  "Description": "{\"createdOn\":\"Mac\",\"createdBy\":\"Amplify\",\"createdWith\":\"12.12.4\",\"stackType\":\"storage-S3\",\"metadata\":{}}"
+}

@@ -1,0 +1,5 @@
+{
+  "BucketName": "crypto-visualizations",
+  "AuthPolicyName": "s3-amplify-auth-policy",
+  "UnauthPolicyName": "s3-amplify-unauth-policy"
+}
