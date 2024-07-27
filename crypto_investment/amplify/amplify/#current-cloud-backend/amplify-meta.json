@@ -50,7 +50,7 @@
         "IdentityPoolName": "testAuthIdentityPool__prod",
         "UserPoolName": "CryptoInvestment"
       },
-      "lastPushTimeStamp": "2024-07-14T16:13:33.082Z",
+      "lastPushTimeStamp": "2024-07-27T14:11:42.782Z",
       "providerMetadata": {
         "s3TemplateURL": "https://s3.amazonaws.com/amplify-cryptoinvestment-prod-173203-deployment/amplify-cfn-templates/auth/CryptoInvestment-cloudformation-template.json",
         "logicalId": "authCryptoInvestment"
@@ -72,7 +72,7 @@
         "HostingBucketName": "ryptonvestment-20240714174357-hostingbucket-prod",
         "CloudFrontDomainName": "dcy5gew2z1uny.cloudfront.net"
       },
-      "lastPushTimeStamp": "2024-07-14T16:13:33.082Z",
+      "lastPushTimeStamp": "2024-07-27T14:11:42.782Z",
       "providerMetadata": {
         "s3TemplateURL": "https://s3.amazonaws.com/amplify-cryptoinvestment-prod-173203-deployment/amplify-cfn-templates/hosting/template.json",
         "logicalId": "hostingS3AndCloudFront"
@@ -90,7 +90,7 @@
         "BucketName": "crypto-visualizations",
         "Region": "us-east-1"
       },
-      "lastPushTimeStamp": "2024-07-14T16:13:33.082Z"
+      "lastPushTimeStamp": "2024-07-27T14:11:42.782Z"
     }
   }
 }
