@@ -1,0 +1,14 @@
+version: 1
+applications:
+  - appRoot: amplify-app
+    frontend:
+      phases:
+        preBuild:
+          commands:
+            - yarn install
+        build:
+          commands:
+            - yarn build
+    env:
+      variables:
+        AMPLIFY_MONOREPO_APP_ROOT: amplify-app

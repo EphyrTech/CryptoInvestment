@@ -1,0 +1,15 @@
+{
+  "dev": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-cryptowatcher-dev-c7e55-authRole",
+      "UnauthRoleArn": "arn:aws:iam::891377260614:role/amplify-cryptowatcher-dev-c7e55-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::891377260614:role/amplify-cryptowatcher-dev-c7e55-authRole",
+      "Region": "us-east-1",
+      "DeploymentBucketName": "amplify-cryptowatcher-dev-c7e55-deployment",
+      "UnauthRoleName": "amplify-cryptowatcher-dev-c7e55-unauthRole",
+      "StackName": "amplify-cryptowatcher-dev-c7e55",
+      "StackId": "arn:aws:cloudformation:us-east-1:891377260614:stack/amplify-cryptowatcher-dev-c7e55/365fc810-4c31-11ef-965a-0e78e2279133",
+      "AmplifyAppId": "d2fvbw97whn9c0"
+    }
+  }
+}
