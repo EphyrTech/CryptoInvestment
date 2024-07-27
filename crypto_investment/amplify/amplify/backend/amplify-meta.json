@@ -1,0 +1,94 @@
+{
+  "providers": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-cryptoinvestment-prod-173203-authRole",
+      "UnauthRoleArn": "arn:aws:iam::891377260614:role/amplify-cryptoinvestment-prod-173203-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::891377260614:role/amplify-cryptoinvestment-prod-173203-authRole",
+      "Region": "us-east-1",
+      "DeploymentBucketName": "amplify-cryptoinvestment-prod-173203-deployment",
+      "UnauthRoleName": "amplify-cryptoinvestment-prod-173203-unauthRole",
+      "StackName": "amplify-cryptoinvestment-prod-173203",
+      "StackId": "arn:aws:cloudformation:us-east-1:891377260614:stack/amplify-cryptoinvestment-prod-173203/3a1c7b00-41f6-11ef-a566-0e45b03175e9",
+      "AmplifyAppId": "d1wl4fip0127a5"
+    }
+  },
+  "auth": {
+    "CryptoInvestment": {
+      "customAuth": false,
+      "dependsOn": [],
+      "frontendAuthConfig": {
+        "mfaConfiguration": "OFF",
+        "mfaTypes": [
+          "SMS"
+        ],
+        "passwordProtectionSettings": {
+          "passwordPolicyMinLength": 8,
+          "passwordPolicyCharacters": [
+            "REQUIRES_LOWERCASE",
+            "REQUIRES_NUMBERS",
+            "REQUIRES_SYMBOLS",
+            "REQUIRES_UPPERCASE"
+          ]
+        },
+        "signupAttributes": [],
+        "socialProviders": [],
+        "usernameAttributes": [
+          "EMAIL"
+        ],
+        "verificationMechanisms": [
+          "EMAIL"
+        ]
+      },
+      "providerPlugin": "awscloudformation",
+      "service": "Cognito",
+      "output": {
+        "UserPoolId": "us-east-1_HecAKXNQf",
+        "AppClientIDWeb": "6eqoh93vv6a76m55mp135r3h4v",
+        "AppClientID": "2llj2brp83fml10ove57c0tsfd",
+        "IdentityPoolId": "us-east-1:dd0038fc-c6f0-4b72-8163-ef448ed65654",
+        "UserPoolArn": "arn:aws:cognito-idp:us-east-1:891377260614:userpool/us-east-1_HecAKXNQf",
+        "IdentityPoolName": "testAuthIdentityPool__prod",
+        "UserPoolName": "CryptoInvestment"
+      },
+      "lastPushTimeStamp": "2024-07-14T21:50:46.428Z",
+      "providerMetadata": {
+        "s3TemplateURL": "https://s3.amazonaws.com/amplify-cryptoinvestment-prod-173203-deployment/amplify-cfn-templates/auth/CryptoInvestment-cloudformation-template.json",
+        "logicalId": "authCryptoInvestment"
+      }
+    }
+  },
+  "hosting": {
+    "S3AndCloudFront": {
+      "providerPlugin": "awscloudformation",
+      "service": "S3AndCloudFront",
+      "output": {
+        "CloudFrontSecureURL": "https://dcy5gew2z1uny.cloudfront.net",
+        "S3BucketSecureURL": "https://ryptonvestment-20240714174357-hostingbucket-prod.s3.amazonaws.com",
+        "CloudFrontOriginAccessIdentity": "E3WJNEJB81X6E",
+        "WebsiteURL": "http://ryptonvestment-20240714174357-hostingbucket-prod.s3-website-us-east-1.amazonaws.com",
+        "CloudFrontDistributionID": "EWKCAM95KVUBK",
+        "Region": "us-east-1",
+        "HostingBucketName": "ryptonvestment-20240714174357-hostingbucket-prod",
+        "CloudFrontDomainName": "dcy5gew2z1uny.cloudfront.net"
+      },
+      "lastPushTimeStamp": "2024-07-14T21:50:46.430Z",
+      "providerMetadata": {
+        "s3TemplateURL": "https://s3.amazonaws.com/amplify-cryptoinvestment-prod-173203-deployment/amplify-cfn-templates/hosting/template.json",
+        "logicalId": "hostingS3AndCloudFront"
+      }
+    }
+  },
+  "storage": {
+    "cryptoinvestment292791bf": {
+      "service": "S3",
+      "serviceType": "imported",
+      "providerPlugin": "awscloudformation",
+      "dependsOn": [],
+      "output": {
+        "BucketName": "crypto-visualizations",
+        "Region": "us-east-1"
+      },
+      "lastPushTimeStamp": "2024-07-14T16:13:33.082Z"
+    }
+  }
+}

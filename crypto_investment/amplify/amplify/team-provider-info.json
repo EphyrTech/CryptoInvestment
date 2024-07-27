@@ -1,0 +1,26 @@
+{
+  "prod": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-cryptoinvestment-prod-173203-authRole",
+      "UnauthRoleArn": "arn:aws:iam::891377260614:role/amplify-cryptoinvestment-prod-173203-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::891377260614:role/amplify-cryptoinvestment-prod-173203-authRole",
+      "Region": "us-east-1",
+      "DeploymentBucketName": "amplify-cryptoinvestment-prod-173203-deployment",
+      "UnauthRoleName": "amplify-cryptoinvestment-prod-173203-unauthRole",
+      "StackName": "amplify-cryptoinvestment-prod-173203",
+      "StackId": "arn:aws:cloudformation:us-east-1:891377260614:stack/amplify-cryptoinvestment-prod-173203/3a1c7b00-41f6-11ef-a566-0e45b03175e9",
+      "AmplifyAppId": "d1wl4fip0127a5"
+    },
+    "categories": {
+      "storage": {
+        "cryptoinvestment292791bf": {
+          "bucketName": "crypto-visualizations",
+          "region": "us-east-1"
+        }
+      },
+      "auth": {
+        "CryptoInvestment": {}
+      }
+    }
+  }
+}
