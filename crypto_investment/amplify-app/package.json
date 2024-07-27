@@ -8,6 +8,7 @@
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
+    "@aws-amplify/storage": "^6.5.3",
     "@aws-amplify/ui-vue": "^4.2.10",
     "aws-amplify": "^6.4.3",
     "core-js": "^3.8.3",

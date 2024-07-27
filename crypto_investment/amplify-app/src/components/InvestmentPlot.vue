@@ -7,7 +7,7 @@
 </template>
 
 <script>
-import { Storage } from 'aws-amplify';
+import { getUrl } from 'aws-amplify/storage';
 
 export default {
   data() {
@@ -17,9 +17,17 @@ export default {
   },
   async mounted() {
     try {
-      this.imageUrl = await Storage.get('investment_plot.png', {
-        level: 'public' // Adjust based on your S3 bucket configuration
+      const getUrlResult = await getUrl({
+        path: 'investment_plot.png',
+        options: {
+          validateObjectExistence: false,
+          expiresIn: 900,
+          useAccelerateEndpoint: false
+        }
       });
+      this.imageUrl = getUrlResult.url;
+      console.log('signed URL: ', getUrlResult.url);
+      console.log('URL expires at: ', getUrlResult.expiresAt);
     } catch (error) {
       console.error('Error fetching image from S3:', error);
     }
