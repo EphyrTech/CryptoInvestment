@@ -13,8 +13,8 @@ applications:
       phases:
         build:
           commands:
-            - update-alternatives --install /usr/bin/python3 python3 /usr/local/bin/python3.12 15
-            - /usr/local/bin/python3.12 -m pip install --upgrade pip
+            - update-alternatives --install /usr/bin/python3 python3 /usr/local/bin/python3 15
+            - /usr/local/bin/python3 -m pip install --upgrade pip
             - /usr/local/bin/pip3.12 install --user pipenv
             - amplifyPush --simple
     env:

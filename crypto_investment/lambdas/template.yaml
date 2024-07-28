@@ -55,7 +55,7 @@ Resources:
     Type: 'AWS::Serverless::Function'
     Properties:
       Handler: 'fetch_prices.lambda_handler'
-      Runtime: 'python3.12'
+      Runtime: 'python3.10'
       CodeUri: fetch_prices/
       Policies:
         - DynamoDBCrudPolicy:
@@ -68,7 +68,7 @@ Resources:
     Type: 'AWS::Serverless::Function'
     Properties:
       Handler: 'calculate_predictions.lambda_handler'
-      Runtime: 'python3.12'
+      Runtime: 'python3.10'
       CodeUri: calculate_predictions/
       Timeout: 30  # Increase the timeout to 30 seconds
       Policies:
@@ -93,7 +93,7 @@ Resources:
     Type: 'AWS::Serverless::Function'
     Properties:
       Handler: 'visualize_data.lambda_handler'
-      Runtime: 'python3.12'
+      Runtime: 'python3.10'
       CodeUri: visualize_data/
       Timeout: 30  # Increase the timeout to 30 seconds
       Policies:
