@@ -1,0 +1,6 @@
+{
+  "AppSyncApiName": "cryptowatcher",
+  "DynamoDBBillingMode": "PAY_PER_REQUEST",
+  "DynamoDBEnableServerSideEncryption": false,
+  "AuthModeLastUpdated": "2024-07-27T20:49:23.137Z"
+}

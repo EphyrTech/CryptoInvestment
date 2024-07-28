@@ -1,6 +1,29 @@
 {
+  "api": {
+    "cryptowatcher": {
+      "dependsOn": [],
+      "output": {
+        "authConfig": {
+          "additionalAuthenticationProviders": [
+            {
+              "authenticationType": "AWS_IAM"
+            }
+          ],
+          "defaultAuthentication": {
+            "apiKeyConfig": {
+              "apiKeyExpirationDays": 30,
+              "description": "api key description"
+            },
+            "authenticationType": "API_KEY"
+          }
+        }
+      },
+      "providerPlugin": "awscloudformation",
+      "service": "AppSync"
+    }
+  },
   "auth": {
-    "cryptowatcher0faf4869": {
+    "CryptoWatcher": {
       "customAuth": false,
       "dependsOn": [],
       "frontendAuthConfig": {
@@ -9,16 +32,23 @@
           "SMS"
         ],
         "passwordProtectionSettings": {
-          "passwordPolicyCharacters": [],
+          "passwordPolicyCharacters": [
+            "REQUIRES_LOWERCASE",
+            "REQUIRES_NUMBERS",
+            "REQUIRES_SYMBOLS",
+            "REQUIRES_UPPERCASE"
+          ],
           "passwordPolicyMinLength": 8
         },
         "signupAttributes": [
-          "EMAIL"
+          "EMAIL",
+          "BIRTHDATE",
+          "NAME",
+          "FAMILY_NAME"
         ],
         "socialProviders": [],
         "usernameAttributes": [
-          "EMAIL",
-          "PHONE_NUMBER"
+          "EMAIL"
         ],
         "verificationMechanisms": [
           "EMAIL"
@@ -26,6 +56,65 @@
       },
       "providerPlugin": "awscloudformation",
       "service": "Cognito"
+    }
+  },
+  "function": {
+    "cryptoPricesTracker": {
+      "build": true,
+      "dependsOn": [
+        {
+          "attributes": [
+            "GraphQLAPIIdOutput",
+            "GraphQLAPIEndpointOutput",
+            "GraphQLAPIKeyOutput"
+          ],
+          "category": "api",
+          "resourceName": "cryptowatcher"
+        },
+        {
+          "attributes": [
+            "UserPoolId"
+          ],
+          "category": "auth",
+          "resourceName": "CryptoWatcher"
+        }
+      ],
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    }
+  },
+  "parameters": {
+    "AMPLIFY_function_cryptoPricesTracker_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "cryptoPricesTracker"
+        }
+      ]
+    },
+    "AMPLIFY_function_cryptoPricesTracker_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "cryptoPricesTracker"
+        }
+      ]
+    },
+    "AMPLIFY_storage_cryptowatcher5b7ee63e_bucketName": {
+      "usedBy": [
+        {
+          "category": "storage",
+          "resourceName": "cryptowatcher5b7ee63e"
+        }
+      ]
+    },
+    "AMPLIFY_storage_cryptowatcher5b7ee63e_region": {
+      "usedBy": [
+        {
+          "category": "storage",
+          "resourceName": "cryptowatcher5b7ee63e"
+        }
+      ]
     }
   },
   "storage": {}

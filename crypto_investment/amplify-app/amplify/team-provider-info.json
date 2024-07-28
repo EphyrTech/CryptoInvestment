@@ -12,8 +12,23 @@
       "AmplifyAppId": "d2fvbw97whn9c0"
     },
     "categories": {
+      "storage": {
+        "cryptowatcher5b7ee63e": {
+          "bucketName": "crypto-visualizations",
+          "region": "us-east-1"
+        }
+      },
+      "api": {
+        "cryptowatcher": {}
+      },
+      "function": {
+        "cryptoPricesTracker": {
+          "deploymentBucketName": "amplify-cryptowatcher-dev-c7e55-deployment",
+          "s3Key": "amplify-builds/cryptoPricesTracker-735432382b2b63533647-build.zip"
+        }
+      },
       "auth": {
-        "cryptowatcher0faf4869": {}
+        "CryptoWatcher": {}
       }
     }
   }

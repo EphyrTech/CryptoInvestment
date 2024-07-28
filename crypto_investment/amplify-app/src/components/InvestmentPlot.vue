@@ -1,43 +1,109 @@
 <template>
   <div>
     <h1>Investment Value Over Time</h1>
-    <img :src="imageUrl" alt="Investment Plot" v-if="imageUrl">
-    <p v-else>Loading...</p>
+    <line-chart :chart-data="chartData" :options="chartOptions"></line-chart>
   </div>
 </template>
 
 <script>
-import { getUrl } from 'aws-amplify/storage';
+import { DataStore } from 'aws-amplify';
+import { CryptoPrice } from '@/models'; // Ensure this path is correct
+import { Line } from 'vue-chartjs';
+import { Chart as ChartJS, Title, Tooltip, Legend, LineElement, CategoryScale, LinearScale, PointElement } from 'chart.js';
+
+ChartJS.register(Title, Tooltip, Legend, LineElement, CategoryScale, LinearScale, PointElement);
 
 export default {
+  components: {
+    LineChart: Line
+  },
   data() {
     return {
-      imageUrl: null
+      models: [],
+      chartData: {
+        labels: [],
+        datasets: []
+      },
+      chartOptions: {
+        responsive: true,
+        maintainAspectRatio: false
+      }
     };
   },
   async mounted() {
     try {
-      const getUrlResult = await getUrl({
-        path: 'investment_plot.png',
-        options: {
-          validateObjectExistence: false,
-          expiresIn: 900,
-          useAccelerateEndpoint: false
+      const models = await DataStore.query(CryptoPrice);
+      this.models = models;
+      this.updateChartData();
+      console.log(models);
+    } catch (error) {
+      console.error('Error querying DataStore:', error);
+    }
+  },
+  methods: {
+    updateChartData() {
+      const labels = [];
+      const coinData = {};
+
+      // Prepare the data structure
+      this.models.forEach(model => {
+        if (!labels.includes(model.Date)) {
+          labels.push(model.Date);
+        }
+        if (!coinData[model.Coin]) {
+          coinData[model.Coin] = [];
         }
       });
-      this.imageUrl = getUrlResult.url;
-      console.log('signed URL: ', getUrlResult.url);
-      console.log('URL expires at: ', getUrlResult.expiresAt);
-    } catch (error) {
-      console.error('Error fetching image from S3:', error);
+
+      // Populate the data for each coin
+      labels.sort(); // Ensure labels are sorted by date
+      Object.keys(coinData).forEach(coin => {
+        labels.forEach(label => {
+          const priceRecord = this.models.find(model => model.Date === label && model.Coin === coin);
+          coinData[coin].push(priceRecord ? priceRecord.Price : null);
+        });
+      });
+
+      // Create datasets for the chart
+      const datasets = Object.keys(coinData).map(coin => ({
+        label: coin,
+        data: coinData[coin],
+        borderColor: this.getRandomColor(),
+        backgroundColor: 'rgba(0, 0, 0, 0.1)'
+      }));
+
+      this.chartData = {
+        labels,
+        datasets
+      };
+    },
+    getRandomColor() {
+      const letters = '0123456789ABCDEF';
+      let color = '#';
+      for (let i = 0; i < 6; i++) {
+        color += letters[Math.floor(Math.random() * 16)];
+      }
+      return color;
     }
   }
 };
 </script>
 
 <style scoped>
-img {
-  max-width: 100%;
-  height: auto;
+.chart-container {
+  position: relative;
+  margin: auto;
+  height: 40vh;
+  width: 80vw;
+}
+
+ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+li {
+  padding: 5px;
+  border-bottom: 1px solid #ccc;
 }
 </style>
